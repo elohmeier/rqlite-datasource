@@ -47,7 +47,7 @@ func (d *Datasource) handleTables(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(tables)
+	_ = json.NewEncoder(w).Encode(tables)
 }
 
 func (d *Datasource) handleColumns(w http.ResponseWriter, r *http.Request) {
@@ -111,5 +111,5 @@ func (d *Datasource) handleColumns(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(columns)
+	_ = json.NewEncoder(w).Encode(columns)
 }

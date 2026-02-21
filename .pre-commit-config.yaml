@@ -1,0 +1,38 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        stages: [pre-push]
+        exclude: ^\.config/
+      - id: end-of-file-fixer
+        stages: [pre-push]
+        exclude: ^\.config/
+      - id: check-yaml
+        stages: [pre-push]
+      - id: check-added-large-files
+        stages: [pre-push]
+
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v2.10.1
+    hooks:
+      - id: golangci-lint
+        stages: [pre-push]
+
+  - repo: local
+    hooks:
+      - id: eslint
+        name: eslint
+        entry: pnpm run lint
+        language: system
+        files: '\.(ts|tsx|js|jsx)$'
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: typecheck
+        name: typecheck
+        entry: pnpm run typecheck
+        language: system
+        files: '\.(ts|tsx)$'
+        pass_filenames: false
+        stages: [pre-push]

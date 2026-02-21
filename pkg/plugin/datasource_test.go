@@ -25,7 +25,7 @@ func TestDatasource_QueryData(t *testing.T) {
 				},
 			},
 		}
-		json.NewEncoder(w).Encode(resp)
+		_ = json.NewEncoder(w).Encode(resp)
 	}))
 	defer rqliteServer.Close()
 
@@ -121,7 +121,7 @@ func TestDatasource_QueryData_EmptySQL(t *testing.T) {
 func TestDatasource_CheckHealth(t *testing.T) {
 	rqliteServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("[+]ok"))
+		_, _ = w.Write([]byte("[+]ok"))
 	}))
 	defer rqliteServer.Close()
 
@@ -149,7 +149,7 @@ func TestDatasource_CheckHealth(t *testing.T) {
 func TestDatasource_CheckHealth_Error(t *testing.T) {
 	rqliteServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusServiceUnavailable)
-		w.Write([]byte("not ready"))
+		_, _ = w.Write([]byte("not ready"))
 	}))
 	defer rqliteServer.Close()
 

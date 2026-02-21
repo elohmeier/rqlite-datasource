@@ -50,7 +50,7 @@ func TestRqliteClient_Query(t *testing.T) {
 				},
 			},
 		}
-		json.NewEncoder(w).Encode(resp)
+		_ = json.NewEncoder(w).Encode(resp)
 	}))
 	defer server.Close()
 
@@ -79,7 +79,7 @@ func TestRqliteClient_CheckReady(t *testing.T) {
 			t.Errorf("expected /readyz, got %s", r.URL.Path)
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("[+]ok"))
+		_, _ = w.Write([]byte("[+]ok"))
 	}))
 	defer server.Close()
 
@@ -98,7 +98,7 @@ func TestRqliteClient_CheckReady(t *testing.T) {
 func TestRqliteClient_CheckReady_Error(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusServiceUnavailable)
-		w.Write([]byte("not ready"))
+		_, _ = w.Write([]byte("not ready"))
 	}))
 	defer server.Close()
 
@@ -117,7 +117,7 @@ func TestRqliteClient_CheckReady_Error(t *testing.T) {
 func TestRqliteClient_Query_HTTPError(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("internal error"))
+		_, _ = w.Write([]byte("internal error"))
 	}))
 	defer server.Close()
 

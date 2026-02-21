@@ -62,7 +62,7 @@ func (c *RqliteClient) Query(ctx context.Context, sql string) (*RqliteQueryRespo
 	if err != nil {
 		return nil, fmt.Errorf("executing query: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -93,7 +93,7 @@ func (c *RqliteClient) CheckReady(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("checking readiness: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
