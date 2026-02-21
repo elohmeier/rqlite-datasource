@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/elohmeier/rqlite-datasource/compare/v1.0.1...v1.0.2) (2026-02-21)
+
+
+### Bug Fixes
+
+* pass go-version to build-plugin action ([a583de2](https://github.com/elohmeier/rqlite-datasource/commit/a583de28a622a50abc9627449a553e92c93a19ed))
+
 ## [1.0.1](https://github.com/elohmeier/rqlite-datasource/compare/v1.0.0...v1.0.1) (2026-02-21)
 
 
