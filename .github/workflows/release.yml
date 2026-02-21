@@ -1,16 +1,51 @@
-# This GitHub Action automates the process of building Grafana plugins.
-# (For more information, see https://github.com/grafana/plugin-actions/blob/main/build-plugin/README.md)
 name: Release
 
 on:
   push:
-    tags:
-      - 'v*' # Run workflow on version tags, e.g. v1.0.0.
+    branches:
+      - main
 
 permissions: read-all
 
 jobs:
   release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    outputs:
+      released: ${{ steps.semantic.outputs.released }}
+      version: ${{ steps.semantic.outputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run semantic-release
+        id: semantic
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >-
+          npx --yes
+          -p semantic-release@25
+          -p @semantic-release/changelog@6
+          -p @semantic-release/exec@7
+          -p @semantic-release/git@10
+          -p @semantic-release/github@12
+          -p @semantic-release/commit-analyzer@13
+          -p @semantic-release/release-notes-generator@14
+          semantic-release
+
+  build-plugin:
+    needs: release
+    if: needs.release.outputs.released == 'true'
     permissions:
       id-token: write
       contents: write
@@ -19,6 +54,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
+          ref: v${{ needs.release.outputs.version }}
           persist-credentials: false
 
       - uses: grafana/plugin-actions/build-plugin@build-plugin/v1.0.2

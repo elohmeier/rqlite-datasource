@@ -1,5 +1,10 @@
 # rqlite Datasource for Grafana
 
+[![CI](https://github.com/elohmeier/rqlite-datasource/actions/workflows/ci.yml/badge.svg)](https://github.com/elohmeier/rqlite-datasource/actions/workflows/ci.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/elohmeier/rqlite-datasource)](https://goreportcard.com/report/github.com/elohmeier/rqlite-datasource)
+[![License](https://img.shields.io/github/license/elohmeier/rqlite-datasource)](LICENSE)
+[![Grafana](https://img.shields.io/badge/Grafana-plugin-orange)](https://grafana.com/grafana/plugins/g42-rqlite-datasource/)
+
 A Grafana backend datasource plugin for [rqlite](https://rqlite.io), the lightweight, distributed relational database built on SQLite.
 
 ## Features
