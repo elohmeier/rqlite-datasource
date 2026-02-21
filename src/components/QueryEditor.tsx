@@ -219,7 +219,7 @@ export function QueryEditor({ query, onChange, onRunQuery, datasource }: Props) 
         <InlineField label="Format" labelWidth={12}>
           <Combobox options={formatOptions} value={format} onChange={onFormatChange} width={20} />
         </InlineField>
-        <InlineField label="Time columns" labelWidth={14} tooltip="Comma-separated list of columns to parse as time">
+        <InlineField label="Time columns" labelWidth={18} tooltip="Comma-separated list of columns to parse as time">
           <Input value={timeColumns.join(', ')} onChange={onTimeColumnsChange} placeholder="time" width={30} />
         </InlineField>
       </InlineFieldRow>

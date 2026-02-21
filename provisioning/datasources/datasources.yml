@@ -2,7 +2,7 @@ apiVersion: 1
 
 datasources:
   - name: rqlite
-    type: elohmeier-rqlite-datasource
+    type: g42-rqlite-datasource
     access: proxy
     url: http://rqlite:4001
     isDefault: true
