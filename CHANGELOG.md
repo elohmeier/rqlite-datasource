@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/elohmeier/rqlite-datasource/compare/v1.0.2...v1.0.3) (2026-02-21)
+
+
+### Bug Fixes
+
+* override GITHUB_REF for build-plugin tag validation ([40e9918](https://github.com/elohmeier/rqlite-datasource/commit/40e99181d9b4152fb8194d45aea84c512922b932))
+
 ## [1.0.2](https://github.com/elohmeier/rqlite-datasource/compare/v1.0.1...v1.0.2) (2026-02-21)
 
 
