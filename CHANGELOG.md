@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/elohmeier/rqlite-datasource/compare/v1.0.0...v1.0.1) (2026-02-21)
+
+
+### Bug Fixes
+
+* add setup-go step to release workflow ([e38de45](https://github.com/elohmeier/rqlite-datasource/commit/e38de45d92c1edd46c2b28e7de437a958b40fa82))
+
 # 1.0.0 (2026-02-21)
 
 
