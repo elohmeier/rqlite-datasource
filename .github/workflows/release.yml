@@ -49,6 +49,8 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
+    env:
+      GITHUB_REF: refs/tags/v${{ needs.release.outputs.version }}
     steps:
       - uses: actions/checkout@v6
         with:
