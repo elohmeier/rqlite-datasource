@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/elohmeier/rqlite-datasource/compare/v1.0.3...v1.0.4) (2026-02-21)
+
+
+### Bug Fixes
+
+* use package-plugin directly instead of build-plugin ([9370c13](https://github.com/elohmeier/rqlite-datasource/commit/9370c13c4eecd26b8d232f80dd4e9cb73a0c555c))
+
 ## [1.0.3](https://github.com/elohmeier/rqlite-datasource/compare/v1.0.2...v1.0.3) (2026-02-21)
 
 
