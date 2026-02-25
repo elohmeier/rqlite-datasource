@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/elohmeier/rqlite-datasource/compare/v1.0.4...v1.0.5) (2026-02-25)
+
+
+### Bug Fixes
+
+* add provenance attestation, screenshots, and license copyright ([562983d](https://github.com/elohmeier/rqlite-datasource/commit/562983db01444e71dbc684100e80d9a11af1bca1))
+
 ## [1.0.4](https://github.com/elohmeier/rqlite-datasource/compare/v1.0.3...v1.0.4) (2026-02-21)
 
 
