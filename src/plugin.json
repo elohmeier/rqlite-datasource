@@ -25,7 +25,11 @@
         "url": "https://rqlite.io"
       }
     ],
-    "screenshots": [],
+    "screenshots": [
+      { "name": "Edit Datasource", "path": "img/edit-datasource.png" },
+      { "name": "Query Builder", "path": "img/query-builder.png" },
+      { "name": "Query Code", "path": "img/query-code.png" }
+    ],
     "version": "%VERSION%",
     "updated": "%TODAY%"
   },
