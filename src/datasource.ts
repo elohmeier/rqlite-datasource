@@ -2,10 +2,12 @@ import { DataSourceInstanceSettings, CoreApp, ScopedVars } from '@grafana/data';
 import { DataSourceWithBackend, getTemplateSrv } from '@grafana/runtime';
 
 import { RqliteQuery, RqliteDataSourceOptions, DEFAULT_QUERY, ColumnInfo } from './types';
+import { RqliteVariableSupport } from './variables';
 
 export class DataSource extends DataSourceWithBackend<RqliteQuery, RqliteDataSourceOptions> {
   constructor(instanceSettings: DataSourceInstanceSettings<RqliteDataSourceOptions>) {
     super(instanceSettings);
+    this.variables = new RqliteVariableSupport();
   }
 
   getDefaultQuery(_: CoreApp): Partial<RqliteQuery> {
