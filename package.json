@@ -11,7 +11,8 @@
     "lint:fix": "npm run lint -- --fix && prettier --write --list-different .",
     "e2e": "playwright test",
     "server": "docker compose up --build",
-    "sign": "npx --yes @grafana/sign-plugin@latest"
+    "sign": "npx --yes @grafana/sign-plugin@latest",
+    "validate": "ID=$(jq -r .id dist/plugin.json) && VER=$(jq -r .version dist/plugin.json) && ln -sfn dist $ID && zip -r $ID-$VER.zip $ID/ && rm $ID && npx --yes @grafana/plugin-validator@latest -sourceCodeUri file://./ $ID-$VER.zip; rm -f $ID-$VER.zip"
   },
   "author": "Elohmeier",
   "license": "Apache-2.0",
@@ -83,6 +84,9 @@
       "@swc/core",
       "@parcel/watcher",
       "protobufjs"
-    ]
+    ],
+    "overrides": {
+      "minimatch": ">=10.2.1"
+    }
   }
 }
