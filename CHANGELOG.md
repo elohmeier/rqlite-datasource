@@ -1,3 +1,15 @@
+# [1.1.0](https://github.com/elohmeier/rqlite-datasource/compare/v1.0.6...v1.1.0) (2026-02-25)
+
+
+### Bug Fixes
+
+* pin eslint to v9 and react to v18 for grafana compatibility ([13623ae](https://github.com/elohmeier/rqlite-datasource/commit/13623ae2fb79d11dc7e3cd1cf010cf2a98267c6f))
+
+
+### Features
+
+* add datasource query variable support ([26e129a](https://github.com/elohmeier/rqlite-datasource/commit/26e129a83076d08a970933192553cd3da2330190))
+
 ## [1.0.6](https://github.com/elohmeier/rqlite-datasource/compare/v1.0.5...v1.0.6) (2026-02-25)
 
 
