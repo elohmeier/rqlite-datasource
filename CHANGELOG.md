@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/elohmeier/rqlite-datasource/compare/v1.1.0...v1.1.1) (2026-02-25)
+
+
+### Bug Fixes
+
+* override minimatch to >=10.2.1 to resolve CVE-2026-26996 ([4d0979b](https://github.com/elohmeier/rqlite-datasource/commit/4d0979b133ad8bb920ac54b4cb7ab9e09b06b23b))
+
 # [1.1.0](https://github.com/elohmeier/rqlite-datasource/compare/v1.0.6...v1.1.0) (2026-02-25)
 
 
