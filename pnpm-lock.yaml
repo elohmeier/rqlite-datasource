@@ -46,8 +46,8 @@ importers:
         specifier: ^9.0.0
         version: 9.0.0(@stylistic/eslint-plugin-ts@4.4.1(eslint@9.39.3)(typescript@5.9.2))(@typescript-eslint/eslint-plugin@8.56.1(@typescript-eslint/parser@8.56.1(eslint@9.39.3)(typescript@5.9.2))(eslint@9.39.3)(typescript@5.9.2))(@typescript-eslint/parser@8.56.1(eslint@9.39.3)(typescript@5.9.2))(eslint-config-prettier@10.1.8(eslint@9.39.3))(eslint-plugin-jsdoc@62.7.1(eslint@9.39.3))(eslint-plugin-react-hooks@7.0.1(eslint@9.39.3))(eslint-plugin-react@7.37.5(eslint@9.39.3))(eslint@9.39.3)(typescript@5.9.2)
       '@grafana/plugin-e2e':
-        specifier: ^3.3.3
-        version: 3.3.3(@playwright/test@1.58.2)
+        specifier: ^3.4.0
+        version: 3.4.0(@axe-core/playwright@4.11.1(playwright-core@1.58.2))(@playwright/test@1.58.2)(axe-core@4.11.1)
       '@grafana/tsconfig':
         specifier: ^2.0.1
         version: 2.0.1
@@ -185,6 +185,11 @@ packages:
 
   '@asamuzakjp/css-color@3.2.0':
     resolution: {integrity: sha512-K1A6z8tS3XsmCMM86xoWdn7Fkdn9m6RSVtocUrJYIwZnFVkng/PvkEoWtOWmP+Scc6saYWHWZYbndEEXxl24jw==}
+
+  '@axe-core/playwright@4.11.1':
+    resolution: {integrity: sha512-mKEfoUIB1MkVTht0BGZFXtSAEKXMJoDkyV5YZ9jbBmZCcWDz71tegNsdTkIN8zc/yMi5Gm2kx7Z5YQ9PfWNAWw==}
+    peerDependencies:
+      playwright-core: '>= 1.0.0'
 
   '@babel/code-frame@7.29.0':
     resolution: {integrity: sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw==}
@@ -575,11 +580,13 @@ packages:
     peerDependencies:
       react: '>=18'
 
-  '@grafana/plugin-e2e@3.3.3':
-    resolution: {integrity: sha512-uU1X2YbzY/DDagO/3HifxrX403wIXNkwV0/Nuna1eefLeVPgs5V/pTPtKXrPQHkXO+hY24f7YAwi00UnrHSp+w==}
+  '@grafana/plugin-e2e@3.4.0':
+    resolution: {integrity: sha512-UmYu0Xwlajkghcjddb5Ip7mFC3m2TlnuXtlfUUS7dBxEJMuSwm2Iq0XjvN0vihMbdlVnkRx4BL7kQ0MbkTVYBQ==}
     engines: {node: '>=20 <=24'}
     peerDependencies:
+      '@axe-core/playwright': ^4.11.1
       '@playwright/test': ^1.52.0
+      axe-core: ^4.11.1
 
   '@grafana/plugin-ui@0.13.1':
     resolution: {integrity: sha512-jdufyHl/Ok/XDSaMiZKZ4aCtosp7wsyCHoAQRw4mDFBAIgsvhC9nX9VR9kvNPCCPQo2qTiiBYdTxpB5ltFuKgA==}
@@ -1916,6 +1923,10 @@ packages:
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
+
+  axe-core@4.11.1:
+    resolution: {integrity: sha512-BASOg+YwO2C+346x3LZOeoovTIoTrRqEsqMa6fmfAV0P+U9mFr9NsyOEpiYvFjbc64NMrSswhV50WdXzdb/Z5A==}
+    engines: {node: '>=4'}
 
   babel-jest@30.2.0:
     resolution: {integrity: sha512-0YiBEOxWqKkSQWL9nNGGEgndoeL0ZpWrbLMNL5u/Kaxrli3Eaxlt3ZtIDktEvXt4L/R9r3ODr2zKwGM/2BjxVw==}
@@ -5064,6 +5075,11 @@ snapshots:
       '@csstools/css-tokenizer': 3.0.4
       lru-cache: 10.4.3
 
+  '@axe-core/playwright@4.11.1(playwright-core@1.58.2)':
+    dependencies:
+      axe-core: 4.11.1
+      playwright-core: 1.58.2
+
   '@babel/code-frame@7.29.0':
     dependencies:
       '@babel/helper-validator-identifier': 7.28.5
@@ -5593,10 +5609,12 @@ snapshots:
       - supports-color
       - typescript
 
-  '@grafana/plugin-e2e@3.3.3(@playwright/test@1.58.2)':
+  '@grafana/plugin-e2e@3.4.0(@axe-core/playwright@4.11.1(playwright-core@1.58.2))(@playwright/test@1.58.2)(axe-core@4.11.1)':
     dependencies:
+      '@axe-core/playwright': 4.11.1(playwright-core@1.58.2)
       '@grafana/e2e-selectors': 12.4.0-21983999378
       '@playwright/test': 1.58.2
+      axe-core: 4.11.1
       semver: 7.7.4
       uuid: 13.0.0
       yaml: 2.8.2
@@ -7253,6 +7271,8 @@ snapshots:
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.1.0
+
+  axe-core@4.11.1: {}
 
   babel-jest@30.2.0(@babel/core@7.29.0):
     dependencies:
