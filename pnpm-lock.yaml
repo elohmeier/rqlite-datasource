@@ -139,11 +139,11 @@ importers:
         specifier: ^1.0.0
         version: 1.0.6
       sass:
-        specifier: ^1.89.0
-        version: 1.97.3
+        specifier: ^1.98.0
+        version: 1.98.0
       sass-loader:
         specifier: ^16.0.0
-        version: 16.0.7(sass@1.97.3)(webpack@5.105.4)
+        version: 16.0.7(sass@1.98.0)(webpack@5.105.4)
       semver:
         specifier: ^7.7.0
         version: 7.7.4
@@ -3035,6 +3035,9 @@ packages:
   immutable@5.1.4:
     resolution: {integrity: sha512-p6u1bG3YSnINT5RQmx/yRZBpenIl30kVxkTLDyHLIMk0gict704Q9n+thfDI7lTRm9vXdDYutVzXhzcThxTnXA==}
 
+  immutable@5.1.5:
+    resolution: {integrity: sha512-t7xcm2siw+hlUM68I+UEOK+z84RzmN59as9DZ7P1l0994DKUWV7UXBMQZVxaoMSRQ+PBZbHCOoBt7a2wxOMt+A==}
+
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
     engines: {node: '>=6'}
@@ -4402,8 +4405,8 @@ packages:
       webpack:
         optional: true
 
-  sass@1.97.3:
-    resolution: {integrity: sha512-fDz1zJpd5GycprAbu4Q2PV/RprsRtKC/0z82z0JLgdytmcq0+ujJbJ/09bPGDxCLkKY3Np5cRAOcWiVkLXJURg==}
+  sass@1.98.0:
+    resolution: {integrity: sha512-+4N/u9dZ4PrgzGgPlKnaaRQx64RO0JBKs9sDhQ2pLgN6JQZ25uPQZKQYaBJU48Kd5BxgXoJ4e09Dq7nMcOUW3A==}
     engines: {node: '>=14.0.0'}
     hasBin: true
 
@@ -8669,6 +8672,8 @@ snapshots:
 
   immutable@5.1.4: {}
 
+  immutable@5.1.5: {}
+
   import-fresh@3.3.1:
     dependencies:
       parent-module: 1.0.1
@@ -10248,17 +10253,17 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass-loader@16.0.7(sass@1.97.3)(webpack@5.105.4):
+  sass-loader@16.0.7(sass@1.98.0)(webpack@5.105.4):
     dependencies:
       neo-async: 2.6.2
     optionalDependencies:
-      sass: 1.97.3
+      sass: 1.98.0
       webpack: 5.105.4(@swc/core@1.15.18(@swc/helpers@0.5.19))(webpack-cli@6.0.1)
 
-  sass@1.97.3:
+  sass@1.98.0:
     dependencies:
       chokidar: 4.0.3
-      immutable: 5.1.4
+      immutable: 5.1.5
       source-map-js: 1.2.1
     optionalDependencies:
       '@parcel/watcher': 2.5.6
