@@ -4,12 +4,14 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"strings"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend/httpclient"
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
 
 // RqliteClient wraps HTTP communication with a rqlite cluster.
@@ -70,7 +72,8 @@ func (c *RqliteClient) Query(ctx context.Context, sql string) (*RqliteQueryRespo
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("rqlite returned status %d: %s", resp.StatusCode, string(respBody))
+		log.DefaultLogger.Error("rqlite query returned non-OK status", "status", resp.StatusCode, "body", string(respBody))
+		return nil, errors.New(genericQueryErrorMessage)
 	}
 
 	var result RqliteQueryResponse

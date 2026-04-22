@@ -3,9 +3,13 @@ package plugin
 import (
 	"encoding/json"
 	"net/http"
+	"regexp"
+	"strconv"
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 )
+
+var tableNamePattern = regexp.MustCompile(`^[A-Za-z0-9_]+$`)
 
 // ColumnInfo represents column metadata returned by the /columns endpoint.
 type ColumnInfo struct {
@@ -24,7 +28,7 @@ func (d *Datasource) handleTables(w http.ResponseWriter, r *http.Request) {
 	resp, err := d.client.Query(ctx, "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
 	if err != nil {
 		log.DefaultLogger.Error("Failed to query tables", "error", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, genericQueryErrorMessage, http.StatusInternalServerError)
 		return
 	}
 
@@ -33,7 +37,8 @@ func (d *Datasource) handleTables(w http.ResponseWriter, r *http.Request) {
 		if len(resp.Results) > 0 {
 			errMsg = resp.Results[0].Error
 		}
-		http.Error(w, errMsg, http.StatusInternalServerError)
+		log.DefaultLogger.Error("Failed to load tables from rqlite", "error", errMsg)
+		http.Error(w, genericQueryErrorMessage, http.StatusInternalServerError)
 		return
 	}
 
@@ -58,13 +63,17 @@ func (d *Datasource) handleColumns(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "table parameter is required", http.StatusBadRequest)
 		return
 	}
+	if !isSafeTableName(table) {
+		http.Error(w, "invalid table parameter", http.StatusBadRequest)
+		return
+	}
 
 	// Use PRAGMA table_info to get column information.
 	// PRAGMA returns: cid, name, type, notnull, dflt_value, pk
-	resp, err := d.client.Query(ctx, "PRAGMA table_info("+table+")")
+	resp, err := d.client.Query(ctx, "PRAGMA table_info("+quoteIdentifier(table)+")")
 	if err != nil {
 		log.DefaultLogger.Error("Failed to query columns", "error", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, genericQueryErrorMessage, http.StatusInternalServerError)
 		return
 	}
 
@@ -73,7 +82,8 @@ func (d *Datasource) handleColumns(w http.ResponseWriter, r *http.Request) {
 		if len(resp.Results) > 0 {
 			errMsg = resp.Results[0].Error
 		}
-		http.Error(w, errMsg, http.StatusInternalServerError)
+		log.DefaultLogger.Error("Failed to load columns from rqlite", "error", errMsg, "table", table)
+		http.Error(w, genericQueryErrorMessage, http.StatusInternalServerError)
 		return
 	}
 
@@ -112,4 +122,12 @@ func (d *Datasource) handleColumns(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(w).Encode(columns)
+}
+
+func isSafeTableName(table string) bool {
+	return tableNamePattern.MatchString(table)
+}
+
+func quoteIdentifier(identifier string) string {
+	return strconv.Quote(identifier)
 }

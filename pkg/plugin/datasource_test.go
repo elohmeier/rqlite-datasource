@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 	"time"
 
@@ -115,6 +116,50 @@ func TestDatasource_QueryData_EmptySQL(t *testing.T) {
 	resA := resp.Responses["A"]
 	if resA.Error == nil {
 		t.Fatal("expected error for empty SQL")
+	}
+}
+
+func TestDatasource_QueryData_HidesBackendErrorDetails(t *testing.T) {
+	rqliteServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError)
+		_, _ = w.Write([]byte("dial tcp 10.0.0.12:4001: connect: connection refused"))
+	}))
+	defer rqliteServer.Close()
+
+	ds := &Datasource{
+		client: &RqliteClient{
+			httpClient:       rqliteServer.Client(),
+			baseURL:          rqliteServer.URL,
+			consistencyLevel: "weak",
+		},
+	}
+
+	qm := QueryModel{RawSQL: "SELECT 1"}
+	qmJSON, _ := json.Marshal(qm)
+
+	req := &backend.QueryDataRequest{
+		Queries: []backend.DataQuery{
+			{
+				RefID: "A",
+				JSON:  qmJSON,
+			},
+		},
+	}
+
+	resp, err := ds.QueryData(context.Background(), req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	resA := resp.Responses["A"]
+	if resA.Error == nil {
+		t.Fatal("expected error response")
+	}
+	if strings.Contains(resA.Error.Error(), "10.0.0.12") {
+		t.Fatalf("backend details leaked to client: %q", resA.Error.Error())
+	}
+	if !strings.Contains(resA.Error.Error(), genericQueryErrorMessage) {
+		t.Fatalf("expected generic error message, got %q", resA.Error.Error())
 	}
 }
 

@@ -8,14 +8,17 @@ import (
 
 	"github.com/grafana/grafana-plugin-sdk-go/backend"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/instancemgmt"
+	"github.com/grafana/grafana-plugin-sdk-go/backend/log"
 	"github.com/grafana/grafana-plugin-sdk-go/backend/resource/httpadapter"
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 )
 
+const genericQueryErrorMessage = "Query failed, see Grafana server log for details"
+
 var (
-	_ backend.QueryDataHandler    = (*Datasource)(nil)
-	_ backend.CheckHealthHandler  = (*Datasource)(nil)
-	_ backend.CallResourceHandler = (*Datasource)(nil)
+	_ backend.QueryDataHandler      = (*Datasource)(nil)
+	_ backend.CheckHealthHandler    = (*Datasource)(nil)
+	_ backend.CallResourceHandler   = (*Datasource)(nil)
 	_ instancemgmt.InstanceDisposer = (*Datasource)(nil)
 )
 
@@ -87,7 +90,8 @@ func (d *Datasource) query(ctx context.Context, query backend.DataQuery) backend
 	// Execute query
 	result, err := d.client.Query(ctx, rawSQL)
 	if err != nil {
-		return backend.ErrDataResponse(backend.StatusInternal, fmt.Sprintf("query execution: %v", err))
+		log.DefaultLogger.Error("Failed to execute query", "error", err, "refID", query.RefID)
+		return backend.ErrDataResponse(backend.StatusInternal, genericQueryErrorMessage)
 	}
 
 	if len(result.Results) == 0 {

@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
@@ -117,7 +118,7 @@ func TestRqliteClient_CheckReady_Error(t *testing.T) {
 func TestRqliteClient_Query_HTTPError(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
-		_, _ = w.Write([]byte("internal error"))
+		_, _ = w.Write([]byte("dial tcp 10.0.0.12:4001: connect: connection refused"))
 	}))
 	defer server.Close()
 
@@ -130,5 +131,11 @@ func TestRqliteClient_Query_HTTPError(t *testing.T) {
 	_, err := client.Query(context.Background(), "SELECT 1")
 	if err == nil {
 		t.Fatal("expected error, got nil")
+	}
+	if strings.Contains(err.Error(), "10.0.0.12") {
+		t.Fatalf("backend details leaked in error: %q", err.Error())
+	}
+	if err.Error() != genericQueryErrorMessage {
+		t.Fatalf("expected generic error %q, got %q", genericQueryErrorMessage, err.Error())
 	}
 }

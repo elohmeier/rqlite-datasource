@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
@@ -68,6 +69,10 @@ func TestHandleTables(t *testing.T) {
 
 func TestHandleColumns(t *testing.T) {
 	ds, rqliteServer := setupTestDatasource(t, func(w http.ResponseWriter, r *http.Request) {
+		if got := r.URL.Query().Get("q"); got != "" {
+			t.Fatalf("unexpected query string %q", got)
+		}
+
 		resp := RqliteQueryResponse{
 			Results: []RqliteResult{
 				{
@@ -115,5 +120,78 @@ func TestHandleColumns_MissingTable(t *testing.T) {
 
 	if rec.Code != http.StatusBadRequest {
 		t.Errorf("expected 400, got %d", rec.Code)
+	}
+}
+
+func TestHandleColumns_RejectsUnsafeTableName(t *testing.T) {
+	ds := &Datasource{}
+
+	req := httptest.NewRequest(http.MethodGet, "/columns?table=users%3BDROP%20TABLE%20users", nil)
+	rec := httptest.NewRecorder()
+	ds.handleColumns(rec, req)
+
+	if rec.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d", rec.Code)
+	}
+
+	if !strings.Contains(rec.Body.String(), "invalid table parameter") {
+		t.Fatalf("unexpected response body: %q", rec.Body.String())
+	}
+}
+
+func TestHandleColumns_QuotesValidatedTableName(t *testing.T) {
+	ds, rqliteServer := setupTestDatasource(t, func(w http.ResponseWriter, r *http.Request) {
+		var queries []string
+		if err := json.NewDecoder(r.Body).Decode(&queries); err != nil {
+			t.Fatalf("failed to decode request body: %v", err)
+		}
+		if len(queries) != 1 {
+			t.Fatalf("expected 1 query, got %d", len(queries))
+		}
+		if queries[0] != `PRAGMA table_info("users")` {
+			t.Fatalf("unexpected query: %q", queries[0])
+		}
+
+		resp := RqliteQueryResponse{
+			Results: []RqliteResult{
+				{
+					Columns: []string{"cid", "name", "type"},
+					Types:   []string{"integer", "text", "text"},
+					Values:  [][]interface{}{{float64(0), "id", "INTEGER"}},
+				},
+			},
+		}
+		_ = json.NewEncoder(w).Encode(resp)
+	})
+	defer rqliteServer.Close()
+
+	req := httptest.NewRequest(http.MethodGet, "/columns?table=users", nil)
+	rec := httptest.NewRecorder()
+	ds.handleColumns(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d: %s", rec.Code, rec.Body.String())
+	}
+}
+
+func TestHandleTables_HidesBackendErrorDetails(t *testing.T) {
+	ds, rqliteServer := setupTestDatasource(t, func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError)
+		_, _ = w.Write([]byte("dial tcp 10.0.0.12:4001: connect: connection refused"))
+	})
+	defer rqliteServer.Close()
+
+	req := httptest.NewRequest(http.MethodGet, "/tables", nil)
+	rec := httptest.NewRecorder()
+	ds.handleTables(rec, req)
+
+	if rec.Code != http.StatusInternalServerError {
+		t.Fatalf("expected 500, got %d", rec.Code)
+	}
+	if strings.Contains(rec.Body.String(), "10.0.0.12") {
+		t.Fatalf("backend details leaked to client: %q", rec.Body.String())
+	}
+	if !strings.Contains(rec.Body.String(), genericQueryErrorMessage) {
+		t.Fatalf("expected generic error message, got %q", rec.Body.String())
 	}
 }

@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { css } from '@emotion/css';
+import { GrafanaTheme2, QueryEditorProps, SelectableValue } from '@grafana/data';
 import {
   type MonacoEditor,
   CodeEditor,
@@ -13,8 +15,8 @@ import {
   Button,
   ConfirmModal,
   Stack,
+  useStyles2,
 } from '@grafana/ui';
-import { QueryEditorProps, SelectableValue } from '@grafana/data';
 import { format as formatSQL } from 'sql-formatter';
 import { DataSource } from '../datasource';
 import {
@@ -47,6 +49,7 @@ const formatOptions: Array<ComboboxOption<string>> = [
 ];
 
 export function QueryEditor({ query, onChange, onRunQuery, datasource }: Props) {
+  const styles = useStyles2(getStyles);
   const {
     rawSql = '',
     format = 'table',
@@ -233,7 +236,7 @@ export function QueryEditor({ query, onChange, onRunQuery, datasource }: Props) 
             <Button variant="secondary" size="sm" icon="expand-arrows" onClick={onExpandedEditorOpen}>
               Expand
             </Button>
-            <span style={{ fontSize: 12, color: '#8e8e8e' }}>Ctrl+Enter to run</span>
+            <span className={styles.editorHint}>Ctrl+Enter to run</span>
           </Stack>
           <CodeEditor
             value={rawSql}
@@ -246,7 +249,7 @@ export function QueryEditor({ query, onChange, onRunQuery, datasource }: Props) 
             showLineNumbers
           />
           <Collapse label="Macro Reference" isOpen={macroRefOpen} onToggle={() => setMacroRefOpen(!macroRefOpen)}>
-            <pre style={{ fontSize: 12, padding: 8 }}>
+            <pre className={styles.macroReference}>
               {`$__timeFilter(column)  → column >= <from> AND column <= <to>
 $__timeFrom           → Unix epoch seconds (from)
 $__timeTo             → Unix epoch seconds (to)
@@ -314,3 +317,17 @@ $__unixEpochFilter(c) → alias for $__timeFilter`}
     </div>
   );
 }
+
+const getStyles = (theme: GrafanaTheme2) => ({
+  editorHint: css({
+    color: theme.colors.text.secondary,
+    fontSize: theme.typography.bodySmall.fontSize,
+  }),
+  macroReference: css({
+    background: theme.colors.background.secondary,
+    fontSize: theme.typography.bodySmall.fontSize,
+    margin: 0,
+    padding: theme.spacing(1),
+    whiteSpace: 'pre-wrap',
+  }),
+});
