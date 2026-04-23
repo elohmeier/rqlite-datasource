@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/elohmeier/rqlite-datasource/compare/v1.1.2...v1.1.3) (2026-04-23)
+
+
+### Bug Fixes
+
+* update release dependencies and validator overrides ([a17bb06](https://github.com/elohmeier/rqlite-datasource/commit/a17bb060fb91d6eaa30f3434e56f1a5f9ea6729d))
+
 ## [1.1.2](https://github.com/elohmeier/rqlite-datasource/compare/v1.1.1...v1.1.2) (2026-04-23)
 
 
