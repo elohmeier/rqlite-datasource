@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/elohmeier/rqlite-datasource/compare/v1.1.1...v1.1.2) (2026-04-23)
+
+
+### Bug Fixes
+
+* harden rqlite error handling and theme query editor UI ([1f3df25](https://github.com/elohmeier/rqlite-datasource/commit/1f3df25d72621c3002468ac6ecb74c7322e24512))
+
 ## [1.1.1](https://github.com/elohmeier/rqlite-datasource/compare/v1.1.0...v1.1.1) (2026-02-25)
 
 
