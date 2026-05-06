@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/elohmeier/rqlite-datasource/compare/v1.1.3...v1.1.4) (2026-05-06)
+
+
+### Bug Fixes
+
+* hide rqlite health check error details ([9de1ba9](https://github.com/elohmeier/rqlite-datasource/commit/9de1ba98aaf97d7ddcd09429c1067b34217644ab))
+
 ## [1.1.3](https://github.com/elohmeier/rqlite-datasource/compare/v1.1.2...v1.1.3) (2026-04-23)
 
 
