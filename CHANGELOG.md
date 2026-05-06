@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/elohmeier/rqlite-datasource/compare/v1.1.4...v1.1.5) (2026-05-06)
+
+
+### Bug Fixes
+
+* sign release artifacts with Grafana token ([5f56f67](https://github.com/elohmeier/rqlite-datasource/commit/5f56f6762ba107a00bc2f4c5176f9bb1126ac91e))
+
 ## [1.1.4](https://github.com/elohmeier/rqlite-datasource/compare/v1.1.3...v1.1.4) (2026-05-06)
 
 
