@@ -13,7 +13,10 @@ import (
 	"github.com/grafana/grafana-plugin-sdk-go/data"
 )
 
-const genericQueryErrorMessage = "Query failed, see Grafana server log for details"
+const (
+	genericQueryErrorMessage  = "Query failed, see Grafana server log for details"
+	genericHealthErrorMessage = "Health check failed, see Grafana server log for details"
+)
 
 var (
 	_ backend.QueryDataHandler      = (*Datasource)(nil)
@@ -116,9 +119,10 @@ func (d *Datasource) query(ctx context.Context, query backend.DataQuery) backend
 // CheckHealth handles health checks.
 func (d *Datasource) CheckHealth(ctx context.Context, _ *backend.CheckHealthRequest) (*backend.CheckHealthResult, error) {
 	if err := d.client.CheckReady(ctx); err != nil {
+		log.DefaultLogger.Error("rqlite health check failed", "error", err)
 		return &backend.CheckHealthResult{
 			Status:  backend.HealthStatusError,
-			Message: fmt.Sprintf("rqlite health check failed: %v", err),
+			Message: genericHealthErrorMessage,
 		}, nil
 	}
 

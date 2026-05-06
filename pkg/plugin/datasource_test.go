@@ -194,7 +194,7 @@ func TestDatasource_CheckHealth(t *testing.T) {
 func TestDatasource_CheckHealth_Error(t *testing.T) {
 	rqliteServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusServiceUnavailable)
-		_, _ = w.Write([]byte("not ready"))
+		_, _ = w.Write([]byte("dial tcp 10.0.0.12:4001: connect: connection refused"))
 	}))
 	defer rqliteServer.Close()
 
@@ -213,5 +213,11 @@ func TestDatasource_CheckHealth_Error(t *testing.T) {
 
 	if result.Status != backend.HealthStatusError {
 		t.Errorf("expected Error status, got %v", result.Status)
+	}
+	if result.Message != genericHealthErrorMessage {
+		t.Fatalf("expected generic health message, got %q", result.Message)
+	}
+	if strings.Contains(result.Message, "10.0.0.12") {
+		t.Fatalf("backend details leaked to client: %q", result.Message)
 	}
 }
