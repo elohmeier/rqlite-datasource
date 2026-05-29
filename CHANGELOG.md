@@ -1,3 +1,10 @@
+## [1.1.6](https://github.com/elohmeier/rqlite-datasource/compare/v1.1.5...v1.1.6) (2026-05-29)
+
+
+### Bug Fixes
+
+* harden visual SQL generation ([281c97d](https://github.com/elohmeier/rqlite-datasource/commit/281c97d9d4fda1ac3d07ae967576aece12b92d1e))
+
 ## [1.1.5](https://github.com/elohmeier/rqlite-datasource/compare/v1.1.4...v1.1.5) (2026-05-06)
 
 
