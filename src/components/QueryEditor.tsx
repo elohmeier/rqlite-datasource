@@ -35,6 +35,7 @@ import { OrderBySelect } from './visual-query-builder/OrderBySelect';
 import { GroupBySelect } from './visual-query-builder/GroupBySelect';
 import { SQLPreview } from './visual-query-builder/SQLPreview';
 import { generateSQL } from './visual-query-builder/sqlGenerator';
+import { QUERY_CODE_EDITOR_HEIGHT } from './codeEditorHeights';
 
 type Props = QueryEditorProps<DataSource, RqliteQuery, RqliteDataSourceOptions>;
 
@@ -80,7 +81,7 @@ export function QueryEditor({ query, onChange, onRunQuery, datasource }: Props) 
   );
 
   useEffect(() => {
-    if (editorMode === 'builder' && generatedSQL && generatedSQL !== rawSql) {
+    if (editorMode === 'builder' && generatedSQL !== rawSql) {
       onChange({ ...query, rawSql: generatedSQL });
     }
   }, [editorMode, generatedSQL]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -241,7 +242,7 @@ export function QueryEditor({ query, onChange, onRunQuery, datasource }: Props) 
           <CodeEditor
             value={rawSql}
             language="sql"
-            height={200}
+            height={QUERY_CODE_EDITOR_HEIGHT}
             onBlur={onRawSqlChange}
             onSave={onRawSqlChange}
             onEditorDidMount={onEditorDidMount}

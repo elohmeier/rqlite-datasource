@@ -1,0 +1,2 @@
+export const QUERY_CODE_EDITOR_HEIGHT = 200;
+export const SQL_PREVIEW_CODE_EDITOR_HEIGHT = 100;

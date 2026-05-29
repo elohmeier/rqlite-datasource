@@ -2,6 +2,7 @@ import React from 'react';
 import { css } from '@emotion/css';
 import { GrafanaTheme2 } from '@grafana/data';
 import { CodeEditor, ClipboardButton, Stack, useStyles2 } from '@grafana/ui';
+import { SQL_PREVIEW_CODE_EDITOR_HEIGHT } from '../codeEditorHeights';
 
 interface Props {
   sql: string;
@@ -22,7 +23,14 @@ export function SQLPreview({ sql }: Props) {
           Copy
         </ClipboardButton>
       </Stack>
-      <CodeEditor value={sql} language="sql" height={100} readOnly showMiniMap={false} showLineNumbers={false} />
+      <CodeEditor
+        value={sql}
+        language="sql"
+        height={SQL_PREVIEW_CODE_EDITOR_HEIGHT}
+        readOnly
+        showMiniMap={false}
+        showLineNumbers={false}
+      />
     </div>
   );
 }
